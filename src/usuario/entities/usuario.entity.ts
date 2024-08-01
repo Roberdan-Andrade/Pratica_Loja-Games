@@ -26,5 +26,5 @@ export class Usuario {
 
     @IsNotEmpty()
     @Column({type: "date", nullable: false})
-    nascimento: string
+    nascimento: Date
 }

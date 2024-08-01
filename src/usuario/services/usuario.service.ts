@@ -3,7 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Usuario } from '../entities/usuario.entity';
 import { Bcrypt } from '../../auth/bcrypt/bcrypt';
-import moment from 'moment';
+
+const moment = require('moment');
 
 @Injectable()
 export class UsuarioService {
@@ -42,9 +43,14 @@ export class UsuarioService {
     }
 
     public ageFromDateOfBirthday(dateOfBirth: any): number {
-        let now = moment().format('YYYY-MM-DD');
+        const now = moment(); // Obter o momento atual
+        const birthDate = moment(dateOfBirth); // Transformar dateOfBirth em momento
         
-        return moment(now).diff(dateOfBirth, 'years');
+        if (!birthDate.isValid()) {
+            throw new Error("Data de nascimento inválida");
+        }
+    
+        return now.diff(birthDate, 'years'); // Calcular a diferença em anos
     }
 
     async create(usuario: Usuario): Promise<Usuario> {
