@@ -77,6 +77,12 @@ export class UsuarioService {
         let updateUsuario: Usuario = await this.findById(usuario.id);
         let buscaUsuario = await this.findByUsuario(usuario.usuario);
 
+        let idadeUsuario = this.ageFromDateOfBirthday(usuario.nascimento);
+
+        if (idadeUsuario < 18) {
+            throw new HttpException("O Usuario não tem idade o bastante para cadastro!", HttpStatus.BAD_REQUEST);
+        }
+        
         if (!updateUsuario)
             throw new HttpException('Usuário não encontrado!', HttpStatus.NOT_FOUND);
 
